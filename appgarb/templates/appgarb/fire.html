@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{%block title%} {{block.super}}::{{ title }} {% endblock %}</title>
+{% block content %}
+<!-- BEGIN CONTENT-->
+<div id="content">
+	<section class="section-body" >
+
+		 <div class="col-md-3  " >
+			 <!-- Begin element 1 --> <!-- BEGIN VERTICAL FORM FLOATING LABELS -->
+			<div class="card card-bordered style-primary" >
+				<div class="card-head ">
+					<a href="{% url 'id_fire' %}">
+						<i class="fa"><header>Выбор модуля</header></i>
+					</a>
+				</div>
+				{% if not is_chosen %}
+				<form class="form style-default-bright " action="{% url 'id_fire' %} " method="post" novalidate>
+						 {% csrf_token %}
+					<div class="floating-label" style="padding:0 10%">
+					{{ form.non_field.errors }}
+						<div class="form-group" >
+							<label for="{{ form.module.id_for_label }}">Код модуля</label>
+							{{ form.as_p }}
+						</div>
+					</div>
+					<div class="card-actionbar-row">
+						<button type="submit" class=" btn btn-flat btn-primary ink-reaction "
+							style="font-size: 90%"  >Выбрать</button>
+					</div>
+				</form>
+				{% endif %}
+			</div><!--end .row -->
+			<!--    End element 1 -->  <!-- END VERTICAL FORM FLOATING LABELS -->
+
+				 <!-- Begin element 2 -->
+			 <div class="card card-bordered style-primary" >
+				<div class="card-head">
+					<header><i class="fa">Информация о модуле</i></header>
+				</div><!--end .card-head -->
+				<div class="style-default-bright card-type-pricing" >
+					<ul class="list-unstyled" style="font-size: 110%">
+						<li>
+							<scan class="blink" style="color:#f44336; font-size:220%">
+								<b> {{fire_item.fire}} </b></a>
+							</scan>
+						</li>
+						<li><b>Модуль</b> <br> {{fire_item.m_module}} </li>
+						<li><b>Адрес</b>  <br> {{fire_item.m_street}} {{fire_item.address}}</li>
+<!--						если модуль неактивен-->
+						{% if fire_item.no_active %}
+							<li> <scan style="font-size:140%"><b> {{fire_item.no_active}} </b></scan></li>
+						{% else %}
+							<li><b>Дата и время</b><br>  {{date_fire|date:"d.m.Y"}} {{date_fire|time:"H:i:s"}}</li>
+<!--							{% if fire_item.fire %}-->
+							<li><scan class="blink" style="color:#f44336; font-size:220%"> <b> {{fire_item.fire}} </b></scan></li>
+<!--							{% endif %}-->
+							<li><b>Температура</b> <br>  {{temp}}° </li>
+							<li><b>Задымленность</b> <br> {{smoke}}%</li>
+<!--							<li><b>Температура</b> <br>  {{fire_item.temp}}°</li>-->
+<!--							<li><b>Задымленность</b> <br> {{fire_item.smoke}}%</li>-->
+						{% endif%}
+					</ul>
+				</div><!--end .card-body -->
+			</div><!--end .row -->
+		 </div><!--end .col -->
+		 <!--    End element 2 -->
+
+		<!-- Begin element 3 -->
+		<div class="col-md-9">
+			<div class="card card-bordered style-primary">
+				<div class="card-head">
+					<header><i class="fa"> Мониторинг температуры</i></header>
+				</div><!--end .card-head -->
+				<div class="style-default-bright">
+					<div class="card-body" style="height: 350px">
+						<canvas id="fire_line1" ></canvas>
+					</div>
+				</div><!--end .col -->
+			</div><!--end .row -->
+			<!--    End element 3 -->
+
+			<!-- Begin element 4 -->
+			<div class="card card-bordered style-primary">
+				<div class="card-head">
+					<header><i class="fa "> Мониторинг задымленности</i></header>
+				</div><!--end .card-head -->
+				<div class="style-default-bright">
+					<div class="card-body" style="height: 350px">
+						<canvas id="fire_line2" ></canvas>
+					</div>
+				</div><!--end .col -->
+			</div><!--end .row -->
+		<!--    End element 4 -->
+		</div><!--end .col -->
+	</section>
+</div><!--end #content-->
+<!-- END CONTENT -->
+{% endblock %}

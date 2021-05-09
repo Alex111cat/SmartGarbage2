@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{%block title%} {{block.super}}::{{ title }} {% endblock %}</title>
+{% block content %}
+<!-- BEGIN CONTENT-->
+<div id="content">
+	<section class="section-body" >
+		 <div class="col-md-3  " >
+			 <!-- Begin element 1 --> <!-- BEGIN VERTICAL FORM FLOATING LABELS -->
+			<div class="card card-bordered style-primary" >
+				<div class="card-head ">
+					<a href="{% url 'id_analitics' %}">
+						<i class="fa"><header>Выбор модуля</header></i>
+					</a>
+				</div>
+				{% if not is_chosen %}
+				<form class="form style-default-bright " action="{% url 'id_analitics' %} " method="post" novalidate>
+						 {% csrf_token %}
+					<div class="floating-label" style="padding:0 10%">
+						{{ form.non_field.errors }}
+						<div class="form-group" >
+							<label for="{{ form.module.id_for_label }}">Код модуля</label>
+							{{ form.as_p }}
+						</div>
+					</div>
+					<div class="card-actionbar-row">
+						<button type="submit" class=" btn btn-flat btn-primary ink-reaction "
+							style="font-size: 90%"  >Выбрать</button>
+					</div>
+				</form>
+				{% endif %}
+			</div><!--end .row -->
+			<!--    End element 1 -->  <!-- END VERTICAL FORM FLOATING LABELS -->
+
+				 <!-- Begin element 2 -->
+			 <div class="card card-bordered style-primary" >
+				<div class="card-head">
+					<header><i class="fa">Информация о модуле</i></header>
+				</div><!--end .card-head -->
+
+				 <div class="style-default-bright card-type-pricing" >
+					<form  method="post">
+						{% csrf_token %}
+						<ul class="list-unstyled" style="font-size: 110%">
+
+							<li><b>Модуль</b> <br> {{analitics_item.m_module}} </li>
+							<li><b>Адрес</b>  <br> {{analitics_item.m_street}} {{analitics_item.address}}</li>
+							{% if analitics_item.m_is_active %}
+								<li>
+									<b>Анализ ряда:</b> <br>
+									{% for word in analitics_item.analiz %} {{ word}} {% endfor %} <br>
+									<b>Максимум</b> = {{analitics_item.data_max}} <br>
+									<b>Минимум</b> = {{analitics_item.data_min}} <br>
+									<b>Среднее значение</b> = {{analitics_item.data_mean}} <br>
+									<b>СКО</b> = {{analitics_item.data_std}}
+								</li>
+								<li>
+									<b>Оптимальный метод:<br>{{analitics_item.method}}</b><br> RMSE = {{analitics_item.rms_min}} <br>
+								</li>
+							    {% if analitics_item.pars %}
+							       <li>
+							            <b>Параметры модели</b><br>
+									    <div class='row'>
+											{% for key, value in analitics_item.pars.items %}
+										        <div class='col-4'> {{key}} = {{value}} </div>
+										    {% endfor%}
+										</div>
+								   </li>
+							    {% endif %}
+
+								<div class="d-grid gap-5 d-md-flex justify-content-md-end" >
+									<button type="submit" class="btn ink-reaction btn-primary no-linebreak" name="confirm"
+											value="{{analitics_item.method}}/{{analitics_item.pars}}" >Принять</button>
+								</div>
+							{% else %}
+								<li><scan style="color:#f44336; font-size:120%"> <b> {{analitics_item.no_active}} </b></scan></li>
+							{% endif %}
+						</ul>
+					</form>
+				</div><!--end .card-body -->
+
+			</div><!--end .row -->
+		 </div><!--end .col -->
+		 <!--    End element 2 -->
+<!-- Модальное окно после открывающего тега body-->
+		<div class="modal fade" id="image-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<div class="modal-title">Просмотр изображения</div>
+					</div>
+					<div class="modal-body">
+						<img class="img-responsive center-block" src="" alt="">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Begin element 3 -->
+		<div class="col-md-9">
+			<div class="card card-bordered style-primary">
+				<div class="card-head">
+					<header><i class="fa"> Результаты анализа</i></header>
+				</div><!--end .card-head -->
+				<div class="style-default-bright">
+					<div class="card-body" >
+							<div class="row">
+								{% if analitics_item.m_is_active %}
+									{% for item in methods %}
+										<div class="col-4">
+											<a href="#" class="thumbnail" >
+												<img style="" src={{item}} alt="...">
+											</a>
+										</div>
+									{% endfor%}
+								{% endif %}
+							</div>
+					</div>
+				</div>
+			</div><!--end .col -->
+		</div><!--end .col -->
+		<!--    End element 3 -->
+
+	</section>
+</div><!--end #content-->
+<!-- END CONTENT -->
+{% endblock %}

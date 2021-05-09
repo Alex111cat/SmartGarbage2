@@ -1,0 +1,85 @@
+<!-- BEGIN MENUBAR-->
+			<div id="menubar" class="menubar-inverse">
+				<div class="menubar-fixed-panel">
+					<div>
+						<a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+							<i class="fa fa-bars"></i>
+						</a>
+					</div>
+					<div class="expanded">
+						<a href="{% url 'home'%}">
+							<span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+						</a>
+					</div>
+				</div>
+				<div class="menubar-scroll-panel">
+					{% url 'home' as home_url %}
+					{% url 'map' as map_url %}
+					{% url 'collection' as collection_url %}
+					{% url 'id_module' as id_module_url %}
+					{% url 'module' as module_url %}
+					{% url 'id_analitics' as id_analitics_url %}
+					{% url 'analitics' as analitics_url %}
+					{% url 'id_fire' as id_fire_url %}
+					{% url 'fire' as fire_url %}
+
+					<!-- BEGIN MAIN MENU -->
+					<ul id="main-menu" class="gui-controls">
+                            <!-- BEGIN TABLES -->
+						<li>
+							<a href="{% url 'home' %}" class="{% if request.path  == home_url %}active{% endif %}" >
+								<div class="gui-icon"><i class="fa fa-table"></i></div>
+								<span class="title">Таблица</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END TABLES -->
+
+					 <!-- BEGIN COLLECTION -->
+						<li>
+							<a href="{% url 'collection' %}" class="{% if request.path  == collection_url %}active{% endif %}" >
+								<div class="gui-icon"><i class="fa fa-list"></i></div>
+								<span class="title">Путевой лист</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END COLLECTION -->
+
+						<!-- BEGIN DASHBOARD -->
+						<li>
+							    <a href="{% url 'id_module' %}"
+								   class="{% if request.path  == id_module_url or request.path  == module_url %}active{% endif %}" >
+								<div class="gui-icon"><i class="fa fa-line-chart"></i></div>
+								<span class="title">Мониторинг</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END DASHBOARD -->
+
+							<!-- BEGIN ANALITICS -->
+						<li>
+							<a href="{% url 'id_analitics' %}"
+								class="{% if request.path  == id_analitics_url or request.path  == analitics_url %}active{% endif %}" >
+								<div class="gui-icon"><i class="fa fa-bar-chart"></i></div>
+								<span class="title">Аналитика</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END ANALITICS -->
+
+						<!-- BEGIN FIRE -->
+						<li>
+							<a href="{% url 'id_fire' %}"
+								class="{% if request.path  == id_fire_url or request.path  == fire_url %}active{% endif %}" >
+								<div class="gui-icon"><i class="fa fa-fire"></i></div>
+								<span class="title">Пожарная тревога</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END FIRE -->
+					</ul><!--end .main-menu -->
+					<!-- END MAIN MENU -->
+
+					<div class="menubar-foot-panel">
+						<small class="no-linebreak hidden-folded">
+							<span class="opacity-75">Copyright &copy; 2014</span> <strong>CodeCovers</strong>
+						</small>
+					</div>
+				</div><!--end .menubar-scroll-panel-->
+			</div><!--end #menubar-->
+			<!-- END MENUBAR -->

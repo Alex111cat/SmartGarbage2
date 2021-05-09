@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{%block title%} {{block.super}}::{{ title }} {% endblock %}</title>
+{% block content %}
+	<!-- BEGIN CONTENT-->
+	<div id="content">
+		<section class="style-default-bright">
+			<div class="section-header">
+				<div class="row">
+					<div class="col-md-12">
+						<h3> <span class="text-primary">Таблица. </span> Вывоз мусорных баков</h3>
+						<p class="" style="font-size: 12px; text-align: right"> Дата вывоза: {{date|date:"d.m.Y"}}</p>
+					</div><!--end .col -->
+				</div><!--end .row -->
+			</div>
+			<hr class="ruler-lg"/>
+
+			<!-- BEGIN DATATABLE  -->
+			<div class="section-body">
+				<form id = "form1" action="{% url 'collection' %}" method="post">
+					 {% csrf_token %}
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="table-responsive">
+								<table id="datatable1" class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th>№</th>
+											<th>Модуль</th>
+											<th>Улица</th>
+											<th>Дом,корпус,подъезд</th>
+											<th class="sort-numeric">Уровень наполнения</th>
+											{% if get_request %}
+												<th>Готов к вывозу</th>
+											{%  else %}
+												<th>Отметка о вывозе</th>
+											{% endif %}
+										</tr>
+									</thead>
+									{% if containers and date %}
+									<tbody>
+										{% for item in containers %}
+											{% if item.c_module.m_is_active %}
+											  <tr class="hover my-hover "  >
+												  <td onclick="window.location.href ='{{ item.c_module.get_absolute_url }}';"> {{ forloop.counter}}</td>
+												  <td onclick="window.location.href ='{{ item.c_module.get_absolute_url }}';"><a href="{{ item.c_module.get_absolute_url }}">{{ item.c_module }}</a></td>
+												  <td onclick="window.location.href ='{{ item.c_module.get_absolute_url }}';">{{ item.c_module.m_street}}</td>
+												  <td onclick="window.location.href ='{{ item.c_module.get_absolute_url }}';">{{ item.c_module.address}}</td>
+												  {% if item.c_curr %}
+													  <td style="padding: 0" onclick="window.location.href ='{{ item.c_module.get_absolute_url }}';" >{{ item.fill_level|floatformat }}%
+														   <div class="progress my-progress" >
+															   <div class="progress-bar {{item.procentage}}" style="width: {{item.fill_level|floatformat}}%"></div>
+														   </div>
+													   </td>
+												  {% else %}
+													<td ><scan style="color:#f44336" onclick="window.location.href ='{{ item.c_module.get_absolute_url }}';"> <b> Нет показаний </b></scan> </td>
+												  {% endif%}
+												  {% if get_request %}
+													  <td>
+														  <div class="col-sm-9" >
+															<label class="checkbox-styled checkbox-danger">
+																<input type="checkbox" name = "item" value="{{item.c_module}}" checked ><span></span>
+															</label>
+														  </div><!--end .col -->
+													  </td>
+												  {% else %}
+													  <td style="color:red"> {{item.is_collected}}</td>
+												  {% endif%}
+											   </tr>
+											{% endif %}
+										{% endfor %}
+									</tbody>
+									{% endif %}
+								</table>
+							</div><!--end .table-responsive -->
+						</div><!--end .col -->
+					</div><!--end .row -->
+					<!-- END DATATABLE -->
+
+					<hr class="ruler-lg"/>
+					<div class="d-md-flex justify-content-md-end" >
+						<button type="submit"  form = "form1" class="btn ink-reaction btn-primary no-linebreak" name="confirm" value="Collection" >Подтвердить вывоз</button>
+					</div>
+				</form>
+
+			</div><!--end .section-body -->
+		</section>
+	</div><!--end #content-->
+	<!-- END CONTENT -->
+{% endblock %}

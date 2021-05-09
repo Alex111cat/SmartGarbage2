@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{%block title%} {{block.super}}::{{ title }} {% endblock %}</title>
+{% block content %}
+<!-- BEGIN CONTENT-->
+<div id="content">
+	<section class="section-body" >
+		 <div class="col-md-3  " >
+			 <!-- Begin element 1 --> <!-- BEGIN VERTICAL FORM FLOATING LABELS -->
+			<div class="card card-bordered style-primary" >
+				<div class="card-head ">
+					<a href="{% url 'id_module' %}">
+						<i class="fa"><header>Выбор модуля</header></i>
+					</a>
+				</div>
+				{% if not is_chosen %}
+				<form class="form style-default-bright " action="{% url 'id_module' %} " method="post" novalidate>
+						 {% csrf_token %}
+					<div class="floating-label" style="padding:0 10%">
+					{{ form.non_field.errors }}
+						<div class="form-group" >
+							<label for="{{ form.module.id_for_label }}">Код модуля</label>
+							{{ form.as_p }}
+						</div>
+					</div>
+					<div class="card-actionbar-row">
+						<button type="submit" class=" btn btn-flat btn-primary ink-reaction "
+							style="font-size: 90%"  >Выбрать</button>
+					</div>
+				</form>
+				{% endif %}
+			</div><!--end .row -->
+			<!--    End element 1 -->  <!-- END VERTICAL FORM FLOATING LABELS -->
+
+				 <!-- Begin element 2 -->
+			 <div class="card card-bordered style-primary" >
+				<div class="card-head">
+					<header><i class="fa">Информация о модуле</i></header>
+				</div><!--end .card-head -->
+				<div class="style-default-bright card-type-pricing" >
+					<ul class="list-unstyled" style="font-size: 110%">
+						{% if module_item.fire %}
+							<li><scan class="blink" style="color:#f44336; font-size:220%">
+								<a href="{{ module_item.c_module.get_absolute_url_fire}}"><b> {{module_item.fire}} </b></a></scan>
+							</li>
+						{% endif %}
+						<li><b>Модуль</b> <br> {{module_item.c_module}} </li>
+						<li><b>Адрес</b>  <br> {{module_item.c_module.m_street}} {{module_item.c_module.address}}</li>
+<!--						если модуль неактивен-->
+						{% if module_item.no_active %}
+							<li><b>Дата и время показания</b> <br>  <scan style="color:#f44336; font-size:120%"> <b> {{module_item.no_active}} </b></scan></li>
+							<li><b>Уровень заполнения</b><br> <scan style="color:#f44336; font-size:120%"> <b> {{module_item.no_curr}} </b></scan><br>	</li>
+						{% else %}
+							{% if module_item.c_curr %}
+								<li><b>Дата и время показания</b> <br>  {{module_item.c_date|date:"d.m.Y"}} {{module_item.c_date|time:"H:i"}}</li>
+								<li><b>Уровень заполнения</b><br>
+								<br>
+								<div id="rickshawGraph" hidden="true" ></div><div id="rickshawDemo2" hidden="true"></div><div id="slider" hidden="true"></div>
+								<div class=" text-center">
+									<div class="knob  size-4  " style="color:{{module_item.chart_color}}">
+										{% if module_item.fill_level > 100 %}
+											<input type="text" class="dial" data-min="0" data-max= "{{ module_item.fill_level}}" value="{{ module_item.fill_level}}" data-readOnly=true>
+										{% else %}
+											<input type="text" class="dial" data-min="0" data-max="100" value="{{ module_item.fill_level}}" data-readOnly=true>
+										{% endif %}
+									</div>
+								</div>
+							{% else %}
+								<scan style="color:#f44336; font-size:120%"> <b> {{module_item.no_curr}} </b></scan>
+							{% endif%}
+						{% endif%}
+						</li>
+					</ul>
+				</div><!--end .card-body -->
+			</div><!--end .row -->
+		 </div><!--end .col -->
+		 <!--    End element 2 -->
+
+		<!-- Begin element 3 -->
+		<form class="form" >
+		<div class="col-md-9">
+			<div class="card card-bordered style-primary">
+				<div class="card-head">
+					<header><i class="fa"> Мониторинг уровня заполнения</i></header>
+				</div><!--end .card-head -->
+				<!-- BEGIN DATEPICKERS -->
+				<div class="style-default-bright">
+					<input id="autocomplete1" data-source="data/countries.json.html" hidden="true">
+
+					   <div class="form-group ">
+							<div class="col-sm-offset-6 col-md-5 ">
+								<div class=" input-daterange input-group" id="demo-date-inline" >
+									<span class="input-group-addon">Период от</span>
+									<input style="font-size: 100%" type="text" class="form-control"  name="start" value={{start_date|date:"d/m/Y"}}>
+									<span class="input-group-addon">до</span>
+									<input style="font-size: 100%" type="text" class="form-control" name="end" value= {{end_date|date:"d/m/Y"}}>
+								</div>
+							</div>
+						   <button type="submit" name="period" value="Period" class="btn ink-reaction btn-icon-toggle btn-floating-action btn-sm btn-primary btn-loading-state"  data-loading-text="<i class='fa fa-spinner fa-spin'></i>">
+							   <i class="fa fa-star"></i>
+						   </button>
+					   </div>
+
+					<div class="card-body" style="height: 300px; padding-top: 0" >
+						<canvas id="module_line" ></canvas>
+					</div>
+				</div><!--end .col -->
+				<!-- END DATEPICKERS -->
+			</div><!--end .row -->
+			<!--    End element 3 -->
+
+			<!-- Begin element 4 -->
+			<div class="card card-bordered style-primary">
+				<div class="card-head">
+					<header><i class="fa "> Статистика заполняемости</i></header>
+				</div><!--end .card-head -->
+				<!-- BEGIN DATEPICKERS -->
+				<div class="style-default-bright">
+
+						<div class="form-group">
+							<div class="col-sm-offset-6 col-md-5 ">
+								<div class="input-daterange input-group" id="demo-date-range" >
+										<span class="input-group-addon">Период от</span>
+										<input style="font-size: 100%" type="text" class="form-control"  name="start1" value={{start1_date|date:"d/m/Y"}}>
+										<span class="input-group-addon">до</span>
+										<input style="font-size: 100%" type="text" class="form-control" name="end1" value= {{end1_date|date:"d/m/Y"}}>
+
+								</div>
+							</div>
+							<button type="submit"  name="period" value="Period1"class="btn ink-reaction btn-icon-toggle btn-floating-action btn-sm btn-primary btn-loading-state"  data-loading-text="<i class='fa fa-spinner fa-spin'></i>">
+								<i class="fa fa-star"></i>
+							</button>
+				        </div>
+
+					<div class="card-body" style="height: 300px; padding-top: 0">
+<!--						<div id="module" class="flot height-6" data-title="Site visits" data-color="#9C27B0,#0aa89e" value="привет"  data-qid={{data}}></div>-->
+						<canvas id="module_bar" ></canvas>
+					</div>
+				</div><!--end .col -->
+				<!-- END DATEPICKERS -->
+			</div><!--end .row -->
+		<!--    End element 4 -->
+		</div><!--end .col -->
+        </form>
+	</section>
+</div><!--end #content-->
+<!-- END CONTENT -->
+{% endblock %}

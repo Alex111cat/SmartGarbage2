@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{%block title%} {{block.super}}::{{ title }} {% endblock %}</title>
+{% block content %}
+<!-- BEGIN CONTENT-->
+<div id="content">
+	<section class="section-body" >
+
+		 <div class="col-md-3  " >
+			 <!-- Begin element 1 --> <!-- BEGIN VERTICAL FORM FLOATING LABELS -->
+			<div class="card card-bordered style-primary" >
+				<div class="card-head ">
+
+						<i class="fa"><header>Выбор метода</header></i>
+
+				</div>
+                    {% for item in methods %}
+                    <a href="/calendar1/{{ item.pk }}" class="list-group-item list-group-item-action">{{ item.me_method}}</a>
+                    {% endfor %}
+			</div><!--end .row -->
+         </div>
+			<!--    End element 1 -->  <!-- END VERTICAL FORM FLOATING LABELS -->
+
+		<!-- Begin element 3 -->
+		<div class="col-md-9">
+			<div class="card card-bordered style-primary">
+				<div class="card-head">
+					<header><i class="fa"> Информация</i></header>
+				</div><!--end .card-head -->
+
+
+
+
+				<!-- END DATEPICKERS -->
+			</div><!--end .row -->
+			<!--    End element 3 -->
+
+
+		</div><!--end .col -->
+
+	</section>
+</div><!--end #content-->
+{% endblock %}

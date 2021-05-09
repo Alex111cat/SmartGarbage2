@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="ru">
+	<head>
+		<title>{%block title%}Умный Мусор{% endblock %}</title>
+
+		<!-- BEGIN META -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="your,keywords">
+		<meta name="description" content="Short explanation about this website">
+		<!-- END META -->
+
+		<!-- BEGIN STYLESHEETS -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
+
+
+		<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap-5.0.0-beta1-dist/css/bootstrap.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/bootstrap.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/materialadmin.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/font-awesome.min.css' %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/material-design-iconic-font.min.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/libs/DataTables/jquery.dataTables.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/libs/DataTables/extensions/dataTables.colVis.css' %} ">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/libs/DataTables/extensions/dataTables.tableTools.css' %}" >
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/libs/rickshaw/rickshaw.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/libs/morris/morris.core.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/theme-default/material-design-iconic-font.min.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/my_style.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static '/css/theme-default/libs/bootstrap-datepicker/datepicker3.css' %}" />
+		<!-- END STYLESHEETS -->
+
+
+	</head>
+	<body class="menubar-hoverable header-fixed ">
+		{% include 'inc/_header.html' %}
+
+		<!-- BEGIN BASE-->
+		<div id="base">
+       	 	{% block content %} {% endblock %}
+        	{% include 'inc/_sidebar.html' %}
+		</div><!--end #base-->
+		<!-- END BASE -->
+
+		<!-- BEGIN JAVASCRIPT -->
+		<script src="{% static 'js/libs/jquery/jquery-1.11.2.min.js' %}"></script>
+		<script src="{% static 'js/libs/jquery/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'js/libs/bootstrap/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/libs/bootstrap-3.3.7/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/libs/DataTables/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static 'js/libs/DataTables/extensions/ColVis/js/dataTables.colVis.min.js' %}"></script>
+		<script src="{% static 'js/libs/nanoscroller/jquery.nanoscroller.min.js' %}"></script>
+		<script src="{% static 'js/core/source/AppNavigation.js' %}"></script>
+		<script src="{% static 'js/core/demo/DemoTableDynamic.js' %}"></script>
+		<script src="{% static 'js/libs/jquery-knob/jquery.knob.js' %}"></script>
+		<script src="{% static 'js/libs/sparkline/jquery.sparkline.min.js' %}"></script>
+		<script src="{% static 'js/libs/d3/d3.v3.js' %}"></script>
+		<script src="{% static 'js/libs/rickshaw/rickshaw.min.js' %}"></script>
+		<script src="{% static 'js/core/demo/DemoCharts.js' %}"></script>
+		<script src="{% static 'js/libs/bootstrap-datepicker/bootstrap-datepicker.js' %}" ></script>
+		<script src="{% static 'js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.ru.js' %}" ></script>
+		<script src="{% static 'js/core/demo/DemoFormComponents.js' %}"></script>
+		<script src="{% static 'js/libs/moment/moment.min.js' %}"></script>
+		<script src="{% static 'js/core/source/App.js' %}"></script>
+		<script src="{% static 'js/Chart.min.js' %}"></script>
+		<script src="{% static 'js/chartjs-plugin-annotation.js' %}"></script>
+
+        <script>
+			function poolColors(a, b) {
+			var pool = [];
+			for(i = 0; i < a.length; i++) {
+				if (b[i] >= 100) {
+					pool.push("rgba(156, 39, 176, 0.8)");
+				} else {
+					pool.push("rgba(156, 39, 176, 0.3)");
+				}
+			}
+			return pool;
+			};
+			function dateFormat(a) {
+			var date = [];
+			for(i = 0; i < a.length; i++) {
+				date.push(moment(a[i]).format("DD/MM/YY"));
+			}
+			return date;
+			};
+
+		var config1 = {
+		  type: 'line',
+		  data: {
+			datasets: [{
+			  data: {{ data|safe }},
+			  backgroundColor: ['rgba(156, 39, 176, 0.1)' ],
+			  borderColor: ['rgba(156, 39, 176, 1)'],
+			}],
+			labels: {{labels}}
+		  },
+		  options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				xAxes: [{
+					type: 'time',
+					time: {
+						displayFormats:{day:'DD/MM/YY',},
+					unit: 'day',
+					round:'day'
+					},
+				}],
+				yAxes: [{
+					 ticks: {
+						 beginAtZero:true,
+						 min: 0,
+						 stepSize: 20
+					 }
+				}]
+			},
+			legend: {display: false,},
+			tooltips: {
+				backgroundColor: 'rgba(10, 168, 158, 1)',
+				displayColors: false,
+				callbacks: {
+					label: function(tooltipItem) {
+						var label = String(tooltipItem.yLabel) + '%';
+						return "Уровень: " + label;
+					},
+				   title: function(tooltipItem) {
+					 var title = moment(tooltipItem[0].xLabel).format('DD/MM/YY');
+					 return "Дата: " + title ;
+				   },
+				},
+			},
+			annotation: {
+				annotations: [{
+					type: 'line',
+					mode: 'horizontal',
+					scaleID: 'y-axis-0',
+					value: '100',
+					borderColor: 'red',
+					borderWidth: 1,
+					borderDash: [5,5],
+				}]
+			}
+		  }
+		};
+		var config2 = {
+		  type: 'bar',
+		  data: {
+			labels: dateFormat({{ labels1}}),
+			datasets: [{
+				data: {{ data1|safe }},
+				backgroundColor: poolColors({{data1}}, {{ fullness }}),
+			}],
+		  },
+		  options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			legend: { display: false, },
+			scales: {
+				xAxes: [{ categoryPercentage: 1.0, }],
+				yAxes: [{
+					 ticks: {beginAtZero:true,}
+				}],
+			},
+			tooltips: {
+				backgroundColor: 'rgba(10, 168, 158, 1)',
+				displayColors: false,
+				callbacks: {
+					label: function(tooltipItem, data ) {
+						var label = ["Период наполнения: " + String(tooltipItem.yLabel) + 'дней'];
+						var index = tooltipItem.index;
+						f = {{fullness}};
+						label.push("Уровень наполнения: " + f[index] + '%');
+						return label;
+					},
+				    title: function(tooltipItem) {
+					 var title = tooltipItem[0].xLabel;
+					 return "Дата вывоза: " + title ;
+					},
+			    },
+			}
+		  }
+		};
+	   function module() {
+		  var ctx1 = document.getElementById('module_line').getContext('2d');
+		  window.myModuleLine = new Chart(ctx1, config1);
+		  var ctx2 = document.getElementById('module_bar').getContext('2d');
+		  window.myModuleBar = new Chart(ctx2, config2);
+		};
+		window.onload = module;
+    </script>
+
+    <script>
+		var config3 = {
+		  type: 'line',
+		  data: {
+			datasets: [{
+			  data: {{ data_temp|safe }},
+			  backgroundColor: 'transparent',
+			  borderColor: ['rgba(156, 39, 176, 1)'],
+			}],
+			labels: {{labels2}}
+		  },
+		  options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				xAxes: [{
+					type: "time",
+					time: {
+						unit: 'second',
+						unitStepSize: 30,
+						displayFormats: { second: 'DD/MM/YY hh:mm:ss'}
+					}
+				}],
+				yAxes: [{
+					 ticks: {
+						 beginAtZero:true,
+						 min: 0,
+						 stepSize: 20
+					 },
+					 scaleLabel: {
+       	 				display: true,
+       				 	labelString: "Температура, в °",
+      				},
+				}]
+			},
+	        legend: {display: false,},
+	        tooltips: {
+				backgroundColor: 'rgba(156, 39, 176, 1)',
+				displayColors: false,
+				callbacks: {
+					label: function(tooltipItem) {
+						var label = String(tooltipItem.yLabel) + '°';
+						return "Температура: " + label;
+					},
+				   title: function(tooltipItem) {
+					 var title = moment(tooltipItem[0].xLabel).format('DD/MM/YY hh:mm:ss');
+					 return "Дата/время: \n " + title ;
+				   },
+				},
+			},
+		  	annotation: {
+				annotations: [{
+					type: 'line',
+					mode: 'horizontal',
+					scaleID: 'y-axis-0',
+					value: '35',
+					borderColor: 'red',
+					borderWidth: 1,
+					borderDash: [5,5],
+					label: {
+                        content: "Критический уровень температуры",
+                        enabled: true,
+                        position: "right",
+                        backgroundColor: 'red',
+                      }
+				}]
+			}
+		  },
+		};
+		  var config4 = {
+		  type: 'line',
+		  data: {
+			datasets: [{
+			  data: {{ data_smoke|safe }},
+			  backgroundColor: 'transparent',
+			  borderColor: ['rgba(255, 152, 0, 1)'],
+			},],
+			labels: {{labels2}}
+		  },
+		  options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				xAxes: [{
+					type: "time",
+					time: {
+						unitStepSize: 30,
+						displayFormats: { second: 'DD/MM/YY hh:mm:ss'}
+					},
+				}],
+				yAxes: [{
+					 ticks: {
+						 beginAtZero:true,
+						 min: 0,
+						 stepSize: 20
+					 },
+					 scaleLabel: {
+       	 				display: true,
+       				 	labelString: "Задымленность, в %",
+      				},
+				}]
+			},
+	        legend: {display: false, },
+	        tooltips: {
+				backgroundColor: 'rgba(255, 152, 0, 1)',
+				displayColors: false,
+				callbacks: {
+					label: function(tooltipItem) {
+						var label = String(tooltipItem.yLabel) + '%';
+						return "Задымленность: " + label;
+					},
+				   title: function(tooltipItem) {
+					 var title = moment(tooltipItem[0].xLabel).format('DD/MM/YY hh:mm:ss');
+					 return "Дата/время: \n " + title ;
+				   },
+				},
+			},
+		  },
+		};
+		function fire() {
+		  var ctx3 = document.getElementById('fire_line1').getContext('2d');
+		  window.myFireLine1 = new Chart(ctx3, config3);
+		  var ctx4 = document.getElementById('fire_line2').getContext('2d');
+		  window.myFireLine2 = new Chart(ctx4, config4);
+		};
+		window.onload = fire;
+     </script>
+
+	<script>
+		$(function() {
+		  $('a.thumbnail').click(function(e) {
+			e.preventDefault();
+			$('#image-modal .modal-body img').attr('src', $(this).find('img').attr('src'));
+			$("#image-modal").modal('show');
+		  });
+		  $('#image-modal .modal-body img').on('click', function() {
+			$("#image-modal").modal('hide')
+		  });
+		});
+	</script>
+	<!-- END JAVASCRIPT -->
+
+	</body>
+</html>
+
+
+
+
+
+

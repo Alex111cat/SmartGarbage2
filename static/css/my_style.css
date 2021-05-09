@@ -1,0 +1,17 @@
+.table tr:hover td {
+	color: red;
+    cursor: pointer;
+    transition: .1s ease-in-out;
+}
+
+.my-progress {
+    padding: 0;
+    margin: 0;
+    height:5px;
+    width:40%;
+}
+
+.my-hover tr:hover  {
+	background: #fffabe;
+}
+
