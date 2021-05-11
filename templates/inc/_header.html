@@ -29,20 +29,15 @@
 				<div class="headerbar-right">
 					<ul class="header-nav header-nav-profile">
 						<li class="dropdown">
-							<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+							<div style="margin-top: 6%">
+<!--							<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">-->
 								<img src="{% static 'img/avatar.jpg' %}" alt="" />
 								<span class="profile-info">
-									Александр Новиков
-									<small>Администратор</small>
+									{{ user.first_name }} {{ user.last_name }}
+									<small>{{ user.username }}</small>
 								</span>
-							</a>
-							<ul class="dropdown-menu animation-dock">
-								<li class="dropdown-header">Config</li>
-								<li><a href="#" >My profile</a></li>
-								<li><a href="#">My appointments</a></li>
-								<li class="divider"></li>
-								<li><a href="#"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
-							</ul><!--end .dropdown-menu -->
+							</div>
+<!--							</a>-->
 						</li><!--end .dropdown -->
 					</ul><!--end .header-nav-profile -->
 				</div><!--end #header-navbar-collapse -->

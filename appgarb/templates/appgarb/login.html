@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+	<section class="section-account">
+		<div class="spacer"></div>
+		<div class="card contain-sm style-transparent">
+			<div class="card-body" >
+				<div class="row">
+					<div class="col-sm-2" ></div>
+					<div class="col-sm-8" >
+						<br/>
+						<span class="text-lg text-bold text-primary"></span>
+						<br/><br/>
+						<h1> Вход </h1>
+						<form class="form floating-label" accept-charset="utf-8" method="post">
+							{% csrf_token %}
+							{{ form.as_p }}
+							<button type="submit" class="btn btn-primary btn-block "> Войти</button>
+						</form>
+					</div><!--end .col -->
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

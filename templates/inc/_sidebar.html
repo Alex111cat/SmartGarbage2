@@ -22,6 +22,7 @@
 					{% url 'analitics' as analitics_url %}
 					{% url 'id_fire' as id_fire_url %}
 					{% url 'fire' as fire_url %}
+					{% url 'logout' as logout_url %}
 
 					<!-- BEGIN MAIN MENU -->
 					<ul id="main-menu" class="gui-controls">
@@ -72,12 +73,23 @@
 							</a>
 						</li><!--end /menu-li -->
 						<!-- END FIRE -->
+
+						<!-- BEGIN LOGIN -->
+						<li>
+							<a href="{% url 'logout' %}"
+								class="{% if request.path  == logout_url %}active{% endif %}" >
+								<div class="gui-icon"><i class="fa fa-user-times"></i></div>
+								<span class="title">Выход</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END LOGIN -->
+
 					</ul><!--end .main-menu -->
 					<!-- END MAIN MENU -->
 
 					<div class="menubar-foot-panel">
 						<small class="no-linebreak hidden-folded">
-							<span class="opacity-75">Copyright &copy; 2014</span> <strong>CodeCovers</strong>
+							<span class="opacity-75">Copyright &copy; 2021</span> <strong>SmartGarbage</strong>
 						</small>
 					</div>
 				</div><!--end .menubar-scroll-panel-->

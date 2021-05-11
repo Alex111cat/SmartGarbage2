@@ -10,6 +10,10 @@ urlpatterns = [
     path('module/', id_module, name='id_module'),
     path('fire/', id_fire, name='id_fire'),
 
+    path('login/', user_login, name='login'),
+
+    path('logout/', user_logout, name='logout'),
+
     path('analitics/', id_analitics, name='id_analitics')
 
 ]

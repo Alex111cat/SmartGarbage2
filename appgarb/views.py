@@ -14,6 +14,8 @@ from django.http import HttpResponseRedirect
 from .utils import MyMixin
 from django.db.models import Max
 import warnings, itertools
+from .forms import UserLoginForm
+from django.contrib.auth import login, logout
 
 class Home(MyMixin, ListView):
     template_name = 'appgarb/index.html'
@@ -649,3 +651,19 @@ class GetAnalitics(MyMixin, DetailView):
             method = get_object_or_404(Methods, me_method=method_list[0])
             Modules.objects.filter(m_module=self.kwargs['slug']).update(m_method=method, m_params=json_params)
         return HttpResponseRedirect("/")
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserLoginForm()
+    return render(request, 'appgarb/login.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
